@@ -458,23 +458,6 @@ function addCompletionItem(
 	}
 
 	let filterText: string | undefined = undefined;
-	if (/^[\w:\s]+$/.test(item.label)) {
-		filterText = item.label;
-		let matches = item.label.match(/:[^:]+/g);
-		if (matches && matches?.length > 0) {
-			if (matches?.length === 1) {
-				// Make the suffix appear twice to boost the score when it is a one level account
-				matches = [matches[0], matches[0]];
-			}
-
-			// boots the score of suffixes match
-			matches?.forEach(suffix => {
-				filterText = `${item.label[0]}${suffix} ${filterText}`;
-			});
-		}
-	} else {
-		filterText = createFilterString(item.label, collector.enablePinyin);
-	}
 
 	// Calculate score for sorting if userInput is provided
 	let score = 0;
