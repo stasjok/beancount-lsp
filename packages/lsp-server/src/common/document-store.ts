@@ -81,7 +81,7 @@ export class DocumentStore extends TextDocuments<TextDocument> {
 				this._beanFiles = [];
 				return;
 			}
-			this._beanFiles = await this.fallbackListBeanFiles(this._initializeParams.workspaceFolders[0]);
+			this._beanFiles = await this.fallbackListBeanFiles(this._initializeParams.workspaceFolders[0], this._initializeParams.initializationOptions?.exclude);
 			return;
 		}
 
@@ -89,7 +89,7 @@ export class DocumentStore extends TextDocuments<TextDocument> {
 		this._beanFiles = files;
 	}
 
-	protected async fallbackListBeanFiles(_workspaceFolder: WorkspaceFolder): Promise<string[]> {
+	protected async fallbackListBeanFiles(_workspaceFolder: WorkspaceFolder, _exclude?: string[]): Promise<string[]> {
 		this.logger.warn('Client does not support ListBeanFile capability');
 		return this.all().map(doc => doc.uri);
 	}

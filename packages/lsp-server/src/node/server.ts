@@ -9,11 +9,11 @@ import { beananagerFactory } from './beancount-manager';
 import { factory } from './storage';
 
 class DocumentStoreInNode extends DocumentStore {
-	protected override async fallbackListBeanFiles(workspaceFolder: { uri: string }): Promise<string[]> {
+	protected override async fallbackListBeanFiles(workspaceFolder: { uri: string }, exclude?: string[]): Promise<string[]> {
 		const workspacePath = URI.parse(workspaceFolder.uri).fsPath;
 		const files = await glob('**/*.{bean,beancount}', {
 			cwd: workspacePath,
-			ignore: ['.venv/**', '**/*.log', '**/*.tmp', '**/*.tmp.*', '**/*.tmp.*.*', '**/*.pyc'],
+			ignore: ['.venv/**', '**/*.log', '**/*.tmp', '**/*.tmp.*', '**/*.tmp.*.*', '**/*.pyc'].concat(exclude ?? []),
 			absolute: true,
 		});
 		return files.map((p) => pathToFileURL(p).toString());
